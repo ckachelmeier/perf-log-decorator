@@ -25,7 +25,7 @@ module PerfLog {
                         return val;
                     }).catch((e) => {
                         timeTaken = performance.now() - startTime;
-                        logMethod(name, timeTaken);
+                        logMethod("finished method " + name + ".  Took " + timeTaken + " milliseconds", name, timeTaken)
                         log.appendFailureTime(timeTaken);
                         throw e;
                     });
@@ -48,7 +48,7 @@ module PerfLog {
                 let timeTaken;
                 let result = originalMethod.apply(this, args);
                 timeTaken = performance.now() - startTime;
-                logMethod("finished method " + name + ".  Took " + timeTaken + " milliseconds");
+                logMethod("finished method " + name + ".  Took " + timeTaken + " milliseconds", name, timeTaken);
                 log.appendSuccessTime(timeTaken);
                 return result;
             };

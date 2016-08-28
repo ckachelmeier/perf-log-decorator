@@ -6,9 +6,9 @@
         "outFile": "dist/perfLogDecorator.js"
     },
     "files": [
-        "src/loggerDecorator.ts",
-        "src/logManager.ts",
+        "typings/main.d.ts",
         "src/log.ts",
-        "typings/main.d.ts"
+        "src/logManager.ts",
+        "src/loggerDecorator.ts"
     ]
 }

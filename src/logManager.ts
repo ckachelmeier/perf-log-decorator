@@ -25,5 +25,30 @@ module PerfLog {
             }
         }
 
+        public getFlatLogs() {
+            let flatLogs = [];
+
+            for (let key in this.indexMap) {
+                const log = this.logs[this.indexMap[key]]; 
+                const flatLog = this.getFlatLog(key, log)
+                flatLogs.push(flatLog);
+            }
+
+            return flatLogs;
+        }
+
+        private getFlatLog(name: string, log: Log) {
+            return {
+                name: name,
+                successes: log.getSuccesses(),
+                successAverage: log.getSuccessAverage(),
+                successStandardDeviation: log.getSuccessStandardDeviation(),
+                failures: log.getFailures(),
+                failureAverage: log.getFailureAverage(),
+                failureStandardDeviation: log.getFailureStandardDeviation()
+
+            }
+        }
+
     }
 }
