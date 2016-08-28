@@ -4,7 +4,17 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "typings install"
+  },  
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ckachelmeier/perf-log-decorator.git"
   },
+  "keywords": [
+    "decorator",
+    "performance",
+    "typescript",
+    "log"
+  ],
   "dependencies": {
     "es6-shim": "0.35.1"
   },
