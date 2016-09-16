@@ -13,9 +13,11 @@ Both decorators can take an optional second parameter to replace the call to con
 ## LogManager
 The following statistics are kept track of by a global LogManager
 * Number of successful calls
+* Min\max runtime of the successful calls
 * Average runtime of the successful calls
 * Standard deviation of the runtime of successful calls
 * Number of failed calls
+* Min\max runtime of the failed calls
 * Average runtime of the failed calls
 * Standard deviation of the runtime of failed calls
 

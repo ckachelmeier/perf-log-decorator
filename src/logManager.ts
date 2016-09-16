@@ -2,6 +2,19 @@ module PerfLog {
     interface LogIndexMap {
         [K: string]: number;
     }
+    export interface IFlatLog {
+        name: string;
+        successes: number;
+        successMin: number;
+        successMax: number;
+        successAverage: number;
+        successStandardDeviation: number;
+        failures: number;
+        failureMin: number;
+        failureMax: number;
+        failureAverage: number;
+        failureStandardDeviation: number;
+    }
 
     export class LogManager {
         public logs: Log[] = [];
@@ -37,16 +50,19 @@ module PerfLog {
             return flatLogs;
         }
 
-        private getFlatLog(name: string, log: Log) {
+        private getFlatLog(name: string, log: Log): IFlatLog {
             return {
                 name: name,
                 successes: log.getSuccesses(),
+                successMin: log.getSuccessMin(),
+                successMax: log.getSuccessMax(),
                 successAverage: log.getSuccessAverage(),
                 successStandardDeviation: log.getSuccessStandardDeviation(),
                 failures: log.getFailures(),
+                failureMin: log.getFailureMin(),
+                failureMax: log.getFailureMax(),
                 failureAverage: log.getFailureAverage(),
                 failureStandardDeviation: log.getFailureStandardDeviation()
-
             }
         }
 

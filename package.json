@@ -1,10 +1,7 @@
 {
   "name": "perf-log-decorator",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "license": "MIT",
-  "scripts": {
-    "postinstall": "typings install"
-  },  
   "repository": {
     "type": "git",
     "url": "https://github.com/ckachelmeier/perf-log-decorator.git"
