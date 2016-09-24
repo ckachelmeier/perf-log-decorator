@@ -37,16 +37,16 @@ module PerfLog {
             return this.failureStats.count
         }
         public  getSuccessMin(): number {
-            return this.successStats.min;
+            return (this.successStats.count) ? this.successStats.min : NaN;
         }
         public getFailureMin(): number {
-            return this.failureStats.min;
+            return (this.failureStats.count) ? this.failureStats.min : NaN;
         }
         public getSuccessMax(): number {
-            return this.successStats.max;
+            return (this.successStats.count) ? this.successStats.max : NaN;
         }
         public getFailureMax(): number {
-            return this.failureStats.max;
+            return (this.failureStats.count) ? this.failureStats.max : NaN;
         }
         public appendSuccessTime(time: number) {
             this.successStats = this.getUpdatedStats(this.successStats, time);
@@ -56,10 +56,10 @@ module PerfLog {
         }
 
         public getSuccessAverage() {
-            return this.successStats.mean;
+            return (this.successStats.count) ? this.successStats.mean : NaN;
         }
         public getFailureAverage() {
-            return this.failureStats.mean;
+            return (this.failureStats.count) ? this.failureStats.mean : NaN;
         }
 
         public getSuccessStandardDeviation() {

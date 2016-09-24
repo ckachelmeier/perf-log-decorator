@@ -2,11 +2,19 @@
 module PerfLog {
     let logManager = new LogManager();
 
-    export interface LogMethod { 
-        (message: string, name?: string, timeTaken?: number): void;
+    export interface LogMethod {
+        (name: string, success: boolean, timeTaken: number): void;
     }
 
-    export function PromisePerformance(name: string, logMethod: LogMethod = console.log.bind(console)) {
+    function defaultLogMethod (name: string, success: boolean, timeTaken: number): void {
+        const status = (success) ? "success" : "fail";
+        const message = `finished method ${name}.  Status: ${status}. Time: ${timeTaken}ms.`;
+        console.log(message);
+    }
+
+    let selectedDefaultLogMethod = defaultLogMethod;
+
+    export function PromisePerformance(name: string, logMethod: LogMethod = selectedDefaultLogMethod) {
         let log = logManager.getLog(name);
         if (!logMethod) {
             logMethod = () => {};
@@ -20,23 +28,23 @@ module PerfLog {
                 if (result && result.then) {
                     return result.then((val) => {
                         timeTaken = performance.now() - startTime;
-                        logMethod(name, timeTaken);
+                        logMethod(name, true, timeTaken);
                         log.appendSuccessTime(timeTaken);
                         return val;
                     }).catch((e) => {
                         timeTaken = performance.now() - startTime;
-                        logMethod("finished method " + name + ".  Took " + timeTaken + " milliseconds", name, timeTaken)
+                        logMethod(name, false, timeTaken)
                         log.appendFailureTime(timeTaken);
                         throw e;
                     });
                 } else {
-                    logMethod("could not evaluate promise");
+                    console.warn("could not evaluate promise for method: " + name);
                 }
             };
         };
     }
 
-    export function Performance(name: string, logMethod: LogMethod = console.log.bind(console)) {
+    export function Performance(name: string, logMethod: LogMethod = selectedDefaultLogMethod) {
         let log = logManager.getLog(name);
         if (!logMethod) {
             logMethod = () => {};
@@ -46,13 +54,24 @@ module PerfLog {
             descriptor.value = function(...args: any[]) {
                 let startTime = performance.now();
                 let timeTaken;
-                let result = originalMethod.apply(this, args);
-                timeTaken = performance.now() - startTime;
-                logMethod("finished method " + name + ".  Took " + timeTaken + " milliseconds", name, timeTaken);
-                log.appendSuccessTime(timeTaken);
-                return result;
+                try {
+                    let result = originalMethod.apply(this, args);
+                    timeTaken = performance.now() - startTime;
+                    logMethod(name, true, timeTaken);
+                    log.appendSuccessTime(timeTaken);
+                    return result;
+                } catch (ex) {
+                    timeTaken = performance.now() - startTime;
+                    logMethod(name, false, timeTaken);
+                    log.appendFailureTime(timeTaken);
+                    throw ex;
+                }
             };
         };
+    }
+
+    export function SetDefaultLogMethod(logMethod: LogMethod) {
+        return selectedDefaultLogMethod = logMethod;
     }
 
     export function GetLogManager() {
