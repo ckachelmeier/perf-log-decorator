@@ -77,4 +77,8 @@ module PerfLog {
     export function GetLogManager() {
         return logManager;
     }
+
+    export function GetLogStatistics() {
+        return logManager.getFlatLogs();
+    }
 }
