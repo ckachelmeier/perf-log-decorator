@@ -6,7 +6,7 @@ Typescript decorator for logging perfomance of methods.  Includes separate decor
 
 ## API
 ### Decorators
-* @PerfLog.Performance(string) => Will log how long the method takes using the input string as a key.
+* @PerfLog.Performance(string) => Will log how long the method takes using the input string as a key.  If the key is not provided, the default key is [className].[methodName]
 * @PerfLog.PromisePerformance(string) => Will log how long the promise returned by the method takes to resolve using the input string as a key.
 Both decorators can take an optional second parameter to replace the call to console.log with a custom method.
 
@@ -50,3 +50,6 @@ Expect the decorator to add ~0.2ms to every call to the function.  To test this 
 
     // examine the logs
     const logs = PerfLog.GetLogStatistics();
+
+##Extension
+You can install the [Performance Log Display](https://chrome.google.com/webstore/detail/performance-log-display/plobnbfcchcgjiljdmiahlioknjjeddp) Chrome extension to display the log results.
