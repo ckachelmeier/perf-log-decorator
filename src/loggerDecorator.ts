@@ -14,12 +14,26 @@ module PerfLog {
 
     let selectedDefaultLogMethod = defaultLogMethod;
 
-    export function PromisePerformance(name: string, logMethod: LogMethod = selectedDefaultLogMethod) {
-        let log = logManager.getLog(name);
+    function getObjectClass(target: Object) {
+        if (target && target.constructor && target.constructor.toString) {
+            var arr = target.constructor.toString().match(
+                /function\s*(\w+)/);
+
+            if (arr && arr.length == 2) {
+                return arr[1];
+            }
+        }
+
+        return undefined;
+    }
+
+    export function PromisePerformance(name?: string, logMethod: LogMethod = selectedDefaultLogMethod) {
         if (!logMethod) {
             logMethod = () => {};
         }
         return function (target: Object, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) {
+            name = name || getObjectClass(target) + "." + propertyKey;
+            let log = logManager.getLog(name);
             let originalMethod = descriptor.value;
             descriptor.value = function(...args: any[]) {
                 let startTime = performance.now();
@@ -44,12 +58,13 @@ module PerfLog {
         };
     }
 
-    export function Performance(name: string, logMethod: LogMethod = selectedDefaultLogMethod) {
-        let log = logManager.getLog(name);
+    export function Performance(name?: string, logMethod: LogMethod = selectedDefaultLogMethod) {
         if (!logMethod) {
             logMethod = () => {};
         }
         return function(target: Object, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) {
+            name = name || getObjectClass(target) + "." + propertyKey;
+            let log = logManager.getLog(name);
             let originalMethod = descriptor.value;
             descriptor.value = function(...args: any[]) {
                 let startTime = performance.now();
